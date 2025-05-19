@@ -15,7 +15,7 @@ const AddVisitForm = () => {
   const [formData, setFormData] = useState({
     impressions: "",
     rating: 5,
-    visitDate: "2025-05-18",
+    visitDate: "2025-05-20",
   });
 
   const { data: locations = [], isLoading: isLocationsLoading } = useQuery<Location[]>({

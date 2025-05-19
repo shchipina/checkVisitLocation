@@ -9,8 +9,8 @@ import NotFoundPage from "./pages/NotFoundPage"
 
 function App() {
   return (
-        <BrowserRouter>
-        <Routes>
+    <BrowserRouter>
+      <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
