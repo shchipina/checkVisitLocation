@@ -1,17 +1,17 @@
-import { addToFavorites, removeFromFavorites } from "../features/favorites/favoritesSlice";
+import { addToFavorites, removeFromFavorites, selectFavorites } from "../features/favorites/favoritesSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHook";
 import type { Location } from "../types/location";
 
 function FavoriteButton({location}: {location: Location}) {
   const dispatch = useAppDispatch();
-  const favorites = useAppSelector(state => state.favorites.favorites);
+  const favorites = useAppSelector(selectFavorites);
   const isFavorite = favorites.find(favorite => favorite.id === location.id);
   
   const handleClick = () => {
     if (isFavorite) {
       dispatch(removeFromFavorites(location.id));
     } else {
-      dispatch(addToFavorites(location))
+      dispatch(addToFavorites(location));
     }
   }
 

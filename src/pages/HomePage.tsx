@@ -1,6 +1,4 @@
 import { useMemo, useState } from "react";
-import Header from "../components/Header"
-import { useAppSelector } from "../hooks/reduxHook";
 import { LOCATION_TAGS, LOCATIONS_TYPES } from "../constants/locationData";
 import cn from "classnames";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -11,18 +9,17 @@ function HomePage() {
   const [locationType, setLocationType] = useState('');
   const [locationTag, setLocationTag] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const token = useAppSelector(state => state.auth.token);
   const itemsPerPage = 12;
 
   const { data: locationsByType = [], isLoading: loadingType } = useQuery({
     queryKey: ['locationsByType', locationType],
-    queryFn: () => getLocationsByTypes(locationType, token),
+    queryFn: () => getLocationsByTypes(locationType),
     placeholderData: keepPreviousData,
   });
 
   const { data: locationsByTag = [], isLoading: loadingTag } = useQuery({
     queryKey: ['locationsByTag', locationTag],
-    queryFn: () => getLocationsByTags(locationTag, token),
+    queryFn: () => getLocationsByTags(locationTag),
     enabled: !!locationTag,
     placeholderData: keepPreviousData,
   });

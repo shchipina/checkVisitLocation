@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHook";
-import { logout } from "../features/auth/authSlice";
+import { logout, selectUser } from "../features/auth/authSlice";
 import { persistor } from "../app/store";
 import { useState } from "react";
 import VisitsList from "../components/VisitsList";
@@ -10,8 +10,7 @@ import VisitModal from "../components/VisitModal";
 function ProfilePage() {
   const [format, setFormat] = useState<string | null>(null);
   const [isOpenModal, setIsOpenVisit] = useState(false);
-  const user = useAppSelector((state) => state.auth.user);
-  const token = useAppSelector((state) => state.auth.token);
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -28,7 +27,7 @@ function ProfilePage() {
     }
 
     try {
-      const blob = await exportData(format, token);
+      const blob = await exportData(format);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

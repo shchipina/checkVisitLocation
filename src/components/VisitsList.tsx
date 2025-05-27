@@ -1,51 +1,22 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getAllVisits, getVisitsByRating, getVisitsByLocationType } from "../api/visits/visits";
+import { fetchVisits } from "../api/visits/visits";
 import { LOCATIONS_TYPES } from "../constants/locationData";
-import { useAppSelector } from "../hooks/reduxHook";
 import type { Visits } from "../types/visits";
 
 const VisitsList = () => {
-  const token = useAppSelector((state) => state.auth.token);
 
   const [rating, setRating] = useState(0);
   const [locationType, setLocationType] = useState("");
-  const [filtersApplied, setFiltersApplied] = useState(false);
 
   const { data, isLoading, refetch, isFetching, isRefetching, isError } = useQuery<Visits[]>({
-    queryKey: ["visits", { rating, locationType, filtersApplied }],
-    queryFn: async () => {
-      if (!filtersApplied) {
-        return await getAllVisits(token!);
-      }
-
-      if (rating && locationType) {
-        const byType = await getVisitsByLocationType(locationType, token!);
-        return byType.filter((visit) => visit.rating === rating);
-      }
-
-      if (rating) {
-        return await getVisitsByRating(rating, token!);
-      }
-
-      if (locationType) {
-        return await getVisitsByLocationType(locationType, token!);
-      }
-
-      return await getAllVisits(token!);
-    },
-    enabled: true,
+    queryKey: ["visits", { rating, locationType }],
+    queryFn: () => fetchVisits(rating, locationType)
   });
-
-  const handleApplyFilters = () => {
-    setFiltersApplied(true);
-    refetch();
-  };
 
   const handleResetFilters = () => {
     setRating(0);
     setLocationType("");
-    setFiltersApplied(false);
     refetch();
   };
 
@@ -76,7 +47,9 @@ const VisitsList = () => {
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold mb-2">Фільтр за типом локації:</h2>
+          <h2 className="text-lg font-semibold mb-2">
+            Фільтр за типом локації:
+          </h2>
           <select
             className="border p-2 rounded"
             value={locationType}
@@ -89,22 +62,15 @@ const VisitsList = () => {
               </option>
             ))}
           </select>
-        </div>
 
-        <div className="flex gap-3">
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            onClick={handleApplyFilters}
-          >
-            Застосувати фільтри
-          </button>
+        </div>
           <button
             className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
             onClick={handleResetFilters}
           >
-            Скинути фільтри
+            Скинути всі фільтри
           </button>
-        </div>
+
       </div>
 
       {isLoading || isFetching || isRefetching ? (
@@ -114,11 +80,11 @@ const VisitsList = () => {
       ) : !data?.length ? (
         <p className="text-gray-500">Дані відсутні</p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-3 mt-5">
           {data.map((visit) => (
             <li
               key={visit.id}
-              className="border border-gray-200 p-4 rounded-md bg-blue-50"
+              className="p-4 rounded-md bg-blue-50"
             >
               <p>
                 <strong>Локація:</strong> {visit.locationName}

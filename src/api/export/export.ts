@@ -1,10 +1,7 @@
 import instance from "../instance"
 
-export const exportData = async (format: string, token: string) => {
+export const exportData = async (format: string) => {
   const response = await instance.get(`/export/${format}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
      responseType: "blob",
   });
 

@@ -2,45 +2,42 @@ import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { createVisit } from "../api/visits/visits";
 import { fetchLocation } from "../api/locations/locations";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
-import { useAppSelector } from "../hooks/reduxHook";
 import { useState } from "react";
 import type { Location } from "../types/location";
+import type { VisitData } from "../types/visitData";
 
 const AddVisitForm = () => {
-  const token = useAppSelector((state) => state.auth.token);
   const queryClient = useQueryClient();
 
-  const [selectedLocationId, setSelectedLocationId] = useState(0);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [query, setQuery] = useState("");
+  const today = new Date();
+  const formattedDate = today.toISOString().split('T')[0];
+
   const [formData, setFormData] = useState({
     impressions: "",
     rating: 5,
-    visitDate: "2025-05-20",
+    visitDate: formattedDate,
   });
 
   const { data: locations = [], isLoading: isLocationsLoading } = useQuery<Location[]>({
     queryKey: ['locations'],
-    queryFn: () => fetchLocation(token),
+    queryFn: fetchLocation,
   });
 
   const filteredLocations = query === ""
     ? locations
     : locations.filter(loc =>
-        loc.name.toLowerCase().includes(query.trim().toLowerCase())
-      );
+      loc.name.toLowerCase().includes(query.trim().toLowerCase())
+    );
 
   const mutation = useMutation({
     mutationKey: ['newVisit'],
-    mutationFn: (newVisitData: {
-      locationId: number;
-      impressions: string;
-      rating: number;
-      visitDate: string;
-    }) => createVisit(newVisitData, token),
+    mutationFn: (newVisitData: VisitData) => createVisit(newVisitData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["visits"] });
-      setFormData({ impressions: '', rating: 5, visitDate: '2025-05-18' });
-      setSelectedLocationId(0);
+      setFormData({ impressions: '', rating: 5, visitDate: formattedDate });
+      setSelectedLocation(null);
       setQuery('');
     },
     onError: (error: unknown) => {
@@ -50,12 +47,12 @@ const AddVisitForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedLocationId) {
+    if (!selectedLocation) {
       alert("Будь ласка, оберіть локацію.");
       return;
     }
 
-    mutation.mutate({ ...formData, locationId: selectedLocationId });
+    mutation.mutate({ ...formData, locationId: selectedLocation.id });
   };
 
   return (
@@ -67,15 +64,15 @@ const AddVisitForm = () => {
           {isLocationsLoading ? (
             <p className="text-gray-500">Завантаження локацій...</p>
           ) : (
-            <Combobox 
-              value={selectedLocationId} 
-              onChange={setSelectedLocationId}
+            <Combobox
+              value={selectedLocation}
+              onChange={setSelectedLocation}
             >
               <div className="relative">
                 <ComboboxInput
                   onChange={(e) => setQuery(e.target.value)}
                   className="w-full border border-gray-300 rounded px-3 py-2"
-                  displayValue={(id) => locations.find(loc => loc.id === id)?.name || ''}
+                  displayValue={(location: Location | null) => location?.name || ''}
                   placeholder="Почніть вводити назву..."
                   required
                 />
@@ -83,15 +80,15 @@ const AddVisitForm = () => {
                   {filteredLocations.length === 0 && (
                     <div className="p-2 text-gray-500">Нічого не знайдено</div>
                   )}
-                  {filteredLocations.map((loc) => (
+                  {filteredLocations.map((location) => (
                     <ComboboxOption
-                      key={loc.id}
-                      value={loc.id}
+                      key={location.id}
+                      value={location}
                       className={({ active }) =>
                         `cursor-pointer px-4 py-2 ${active ? 'bg-green-100 text-green-800' : ''}`
                       }
                     >
-                      {loc.name}
+                      {location.name}
                     </ComboboxOption>
                   ))}
                 </ComboboxOptions>

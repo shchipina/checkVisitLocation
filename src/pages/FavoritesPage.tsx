@@ -1,8 +1,9 @@
 import LocationCard from "../components/LocationCard";
+import { selectFavorites } from "../features/favorites/favoritesSlice";
 import { useAppSelector } from "../hooks/reduxHook";
 
 function FavoritesPage() {
-  const favorites = useAppSelector((state) => state.favorites.favorites);
+  const favorites = useAppSelector(selectFavorites);
 
   return (
     <main>
