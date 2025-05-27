@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Location } from "../../types/location";
-import type { RootState } from "../../store/store";
+import type { RootState } from "../../app/store";
 
 interface FavoritesState {
   favorites: Location[]
@@ -29,5 +29,5 @@ const favoriteSlice = createSlice({
 });
 
 export const { addToFavorites, removeFromFavorites } = favoriteSlice.actions;
-export const auth = (state: RootState) => state.auth
+export const favorites = (state: RootState) => state.favorites.favorites;
 export default favoriteSlice.reducer;

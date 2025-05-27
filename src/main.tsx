@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { Provider } from 'react-redux'
-import { persistor, store } from './store/store.ts'
+import { persistor, store } from './app/store.ts'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PersistGate } from 'redux-persist/integration/react'
 

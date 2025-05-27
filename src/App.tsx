@@ -6,10 +6,15 @@ import HomePage from "./pages/HomePage"
 import ProfilePage from "./pages/ProfilePage"
 import FavoritesPage from "./pages/FavoritesPage"
 import NotFoundPage from "./pages/NotFoundPage"
+import Header from "./components/Header"
+import { useAppSelector } from "./hooks/reduxHook"
+import { selectToken } from "./features/auth/authSlice"
 
 function App() {
+  const token = useAppSelector(selectToken);
   return (
     <BrowserRouter>
+      {token && <Header />}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

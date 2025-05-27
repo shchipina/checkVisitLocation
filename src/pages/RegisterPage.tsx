@@ -6,11 +6,13 @@ import { setUser } from '../features/auth/authSlice';
 import { register } from '../api/auth/auth';
 
 import { FaUnlockAlt, FaUser } from "react-icons/fa";
+import { useAutoFocus } from '../hooks/useAutoFocus';
 
 function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const inputRef = useAutoFocus();
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -64,6 +66,7 @@ function RegisterPage() {
         >
           <div className="relative">
             <input
+              ref={inputRef}
               type="text"
               value={username}
               onChange={handleUsername}
@@ -100,7 +103,7 @@ function RegisterPage() {
           )
         }
         <p className="mt-8">
-          Already have an account? 
+          Already have an account?
           <span>
             <Link to="/login" className="font-bold underline ml-2 text-[#ED5B1E]">Log in</Link>
           </span>

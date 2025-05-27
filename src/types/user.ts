@@ -1,7 +1,7 @@
 export interface User {
-  id: number,
+  id?: number,
   username: string,
-  token: string
+  token?: string
 };
 
 export interface AuthCredentials {

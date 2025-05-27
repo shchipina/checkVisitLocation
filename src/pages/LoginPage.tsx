@@ -1,25 +1,42 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUnlockAlt, FaUser } from "react-icons/fa";
 import { useMutation } from '@tanstack/react-query';
-import { setToken } from '../features/auth/authSlice';
+import { selectToken, setToken, setUser } from '../features/auth/authSlice';
 import type { AuthCredentials, LoginResponse } from '../types/user';
 import { login } from '../api/auth/auth';
-import { useAppDispatch } from '../hooks/reduxHook';
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHook';
+import { handleChange } from '../utils/handleChange';
+import { decodeJwt } from '../utils/decodeJwt';
+import type { JwtPayload } from '../types/jwtPayload';
+import { useAutoFocus } from '../hooks/useAutoFocus';
 
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const inputRef = useAutoFocus();
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate, token]);
 
   const mutation = useMutation<LoginResponse, Error, AuthCredentials>({
     mutationFn: login,
     onSuccess: (data: LoginResponse) => {
       dispatch(setToken(data.token));
+
+      const decoded = decodeJwt<JwtPayload>(data.token);
+
+      if (decoded?.sub) {
+        dispatch(setUser({ username: decoded.sub }));
+      }
       navigate('/');
     },
     onError: () => {
@@ -42,16 +59,6 @@ function LoginPage() {
     setErrorMessage("");
   };
 
-  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    setErrorMessage("");
-  };
-
-  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-    setErrorMessage("");
-  };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-stone-900">
       <div className='flex flex-col justify-center items-center px-4 py-8 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg'>
@@ -64,9 +71,10 @@ function LoginPage() {
         >
           <div className="relative">
             <input
+              ref={inputRef}
               type="text"
               value={username}
-              onChange={handleEmail}
+              onChange={handleChange(setUsername, () => setErrorMessage(""))}
               className="border-b border-white p-2 w-full outline-none text-[18px]"
               placeholder="Username"
               autoComplete="username"
@@ -78,7 +86,7 @@ function LoginPage() {
             <input
               type="password"
               value={password}
-              onChange={handlePassword}
+              onChange={handleChange(setPassword, () => setErrorMessage(""))}
               className="border-b border-white p-2 w-full outline-none text-[18px]"
               placeholder="Password"
               autoComplete="current-password"

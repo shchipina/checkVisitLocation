@@ -2,9 +2,10 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../../public/icon.png";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useAppSelector } from "../hooks/reduxHook";
+import { selectUser } from "../features/auth/authSlice";
 
 function Header() {
-  const user = useAppSelector(state => state.auth.user)
+  const user = useAppSelector(selectUser);
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-[1200px] mx-auto flex justify-between items-center px-4 py-3">
@@ -15,7 +16,7 @@ function Header() {
             alt="CheckVisitLocation"
             className="w-[35px] h-[35px] object-contain"
           />
-          <span className="text-xl font-semibold text-blue-700">CheckVisitLocation</span>
+          <span className="text-xl font-semibold text-[#333]">CheckVisitLocation</span>
         </Link>
 
         <nav className="flex items-center gap-6 text-gray-700">

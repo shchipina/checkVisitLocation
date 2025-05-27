@@ -16,23 +16,23 @@ const VisitsList = () => {
     queryKey: ["visits", { rating, locationType, filtersApplied }],
     queryFn: async () => {
       if (!filtersApplied) {
-        return await getAllVisits(token);
+        return await getAllVisits(token!);
       }
 
       if (rating && locationType) {
-        const byType = await getVisitsByLocationType(locationType, token);
+        const byType = await getVisitsByLocationType(locationType, token!);
         return byType.filter((visit) => visit.rating === rating);
       }
 
       if (rating) {
-        return await getVisitsByRating(rating, token);
+        return await getVisitsByRating(rating, token!);
       }
 
       if (locationType) {
-        return await getVisitsByLocationType(locationType, token);
+        return await getVisitsByLocationType(locationType, token!);
       }
 
-      return await getAllVisits(token);
+      return await getAllVisits(token!);
     },
     enabled: true,
   });
@@ -50,7 +50,7 @@ const VisitsList = () => {
   };
 
   return (
-    <section className="bg-white shadow-md p-6 rounded-xl w-full space-y-6">
+    <section className="w-full">
       <h3 className="text-xl font-bold text-blue-700">📍 Мої відвідування:</h3>
 
       <div className="flex flex-col gap-4">

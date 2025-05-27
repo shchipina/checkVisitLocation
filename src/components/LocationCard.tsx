@@ -29,9 +29,6 @@ function LocationCard({ location }: {location: Location}) {
               {tag}
             </span>
           ))}
-          {tags.length > 4 && (
-            <span className="text-xs text-gray-500">+{tags.length - 4} ще</span>
-          )}
         </div>
       </div>
 
