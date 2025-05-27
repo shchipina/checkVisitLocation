@@ -9,7 +9,7 @@ function Header() {
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-[1200px] mx-auto flex justify-between items-center px-4 py-3">
-        
+
         <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           <img
             src={logo}
@@ -23,7 +23,11 @@ function Header() {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `hover:text-blue-600 transition-colors ${isActive ? "text-blue-700 font-semibold" : ""}`
+              `relative inline-block px-1 
+              after:content-[''] after:absolute after:left-0 after:bottom-0 
+              after:h-[2px] after:w-0 after:bg-current 
+              after:transition-all after:duration-300 hover:after:w-full 
+              ${isActive ? "font-semibold" : ""}`
             }
           >
             Home
@@ -31,21 +35,29 @@ function Header() {
           <NavLink
             to="/favorites"
             className={({ isActive }) =>
-              `hover:text-blue-600 transition-colors ${isActive ? "text-blue-700 font-semibold" : ""}`
+              `relative inline-block px-1 
+              after:content-[''] after:absolute after:left-0 after:bottom-0 
+              after:h-[2px] after:w-0 after:bg-current 
+              after:transition-all after:duration-300 hover:after:w-full 
+              ${isActive ? "font-semibold" : ""}`
             }
           >
             Favorites
           </NavLink>
-
           <NavLink
             to="/profile"
             className={({ isActive }) =>
-              `flex items-center gap-2 hover:text-blue-600 transition-colors ${isActive ? "text-blue-700 font-semibold" : ""}`
+              `relative inline-block px-1 
+              after:content-[''] after:absolute after:left-0 after:bottom-0 
+              after:h-[2px] after:w-0 after:bg-current 
+              after:transition-all after:duration-300 hover:after:w-full 
+              ${isActive ? "font-semibold" : ""}`
             }
           >
             {user?.username}
-            <FaRegUserCircle className="text-xl" />
+            <FaRegUserCircle className="text-xl inline ml-1" />
           </NavLink>
+
         </nav>
       </div>
     </header>

@@ -113,7 +113,7 @@ function HomePage() {
               className={cn(
                 'px-4 py-2 border rounded-md text-sm font-medium transition',
                 currentPage === i + 1
-                  ? 'bg-blue-600 text-white border-blue-600'
+                  ? 'bg-amber-500 text-white border-amber-500'
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
               )}
             >

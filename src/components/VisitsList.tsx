@@ -3,6 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchVisits } from "../api/visits/visits";
 import { LOCATIONS_TYPES } from "../constants/locationData";
 import type { Visits } from "../types/visits";
+import { IoLocationOutline } from "react-icons/io5";
+import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 
 const VisitsList = () => {
 
@@ -22,7 +25,9 @@ const VisitsList = () => {
 
   return (
     <section className="w-full">
-      <h3 className="text-xl font-bold text-blue-700">📍 Мої відвідування:</h3>
+      <h3 className="text-xl font-bold text-[#333] mb-4">
+        <IoLocationOutline className="inline" /> Мої відвідування:
+      </h3>
 
       <div className="flex flex-col gap-4">
         <div className="flex gap-3">
@@ -34,12 +39,17 @@ const VisitsList = () => {
                 value={r}
                 checked={rating === r}
                 onChange={() => setRating(r)}
+                className="cursor-pointer"
               />
-              {r} ⭐
+              {r}
+              {rating === r
+                ? <FaStar className="inline text-yellow-400" />
+                : <CiStar className="inline" />
+              }
             </label>
           ))}
           <button
-            className="text-sm text-blue-600 underline ml-2"
+            className="text-sm text-blue-600 underline ml-2 cursor-pointer"
             onClick={() => setRating(0)}
           >
             Скинути
@@ -51,7 +61,7 @@ const VisitsList = () => {
             Фільтр за типом локації:
           </h2>
           <select
-            className="border p-2 rounded"
+            className="border p-2 rounded cursor-pointer"
             value={locationType}
             onChange={(e) => setLocationType(e.target.value)}
           >
@@ -64,12 +74,12 @@ const VisitsList = () => {
           </select>
 
         </div>
-          <button
-            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
-            onClick={handleResetFilters}
-          >
-            Скинути всі фільтри
-          </button>
+        <button
+          className="cursor-pointer"
+          onClick={handleResetFilters}
+        >
+          Скинути всі фільтри
+        </button>
 
       </div>
 
@@ -92,8 +102,10 @@ const VisitsList = () => {
               <p>
                 <strong>Дата:</strong> {visit.visitDate}
               </p>
-              <p>
-                <strong>Оцінка:</strong> ⭐ {visit.rating}
+              <p className="flex items-center">
+                <strong>Оцінка:</strong>
+                <FaStar className="inline text-yellow-400 mx-1" />
+                {visit.rating}
               </p>
               <p>
                 <strong>Враження:</strong> {visit.impressions}

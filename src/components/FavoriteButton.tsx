@@ -1,6 +1,7 @@
 import { addToFavorites, removeFromFavorites, selectFavorites } from "../features/favorites/favoritesSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHook";
 import type { Location } from "../types/location";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 function FavoriteButton({location}: {location: Location}) {
   const dispatch = useAppDispatch();
@@ -16,8 +17,8 @@ function FavoriteButton({location}: {location: Location}) {
   }
 
   return (
-    <button className="cursor-pointer bg-blue-800 text-white p-2 rounded" onClick={handleClick}>
-      {isFavorite ? <span>Remove</span> : <span>Add to Favorite</span>}
+    <button className="cursor-pointer" onClick={handleClick}>
+      {isFavorite ? <FaHeart color="red" size={25} /> : <FaRegHeart color="#444" size={25} />}
     </button>
   )
 }

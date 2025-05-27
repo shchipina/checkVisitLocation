@@ -57,7 +57,9 @@ const AddVisitForm = () => {
 
   return (
     <section className="w-full">
-      <h3 className="text-xl font-bold mb-4 text-green-700">➕ Додати відвідування</h3>
+      <h3 className="text-xl font-bold mb-4">
+        Додати відвідування
+      </h3>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div>
           <label className="block font-medium mb-1 text-gray-700">Локація:</label>

@@ -1,15 +1,21 @@
 import type { Location } from "../types/location";
 import FavoriteButton from "./FavoriteButton";
 
-function LocationCard({ location }: {location: Location}) {
+function LocationCard({ location }: { location: Location }) {
   const { name, description, address, geoTag, tags, type, visitCount } = location;
 
   return (
-    <div className="flex flex-col justify-between bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300 h-80 max-h-80 min-h-80">
+    <div className="flex flex-col justify-between bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition duration-300">
       <div>
-        <div className="mb-2">
-          <h2 className="text-lg font-semibold text-gray-800 truncate">{name}</h2>
-          <p className="text-xs text-gray-500">{type}</p>
+        <div className="flex justify-between items-start">
+          <div className="mb-2 max-w-[85%]">
+            <h2 title={name} className="text-lg font-semibold text-gray-800 truncate">
+              {name}
+            </h2>
+            <p className="text-xs text-gray-500">{type}</p>
+          </div>
+
+          <FavoriteButton location={location} />
         </div>
 
         <p className="text-sm text-gray-700 mb-3 line-clamp-1">{description}</p>
@@ -30,10 +36,6 @@ function LocationCard({ location }: {location: Location}) {
             </span>
           ))}
         </div>
-      </div>
-
-      <div className="mt-auto pt-4">
-        <FavoriteButton location={location} />
       </div>
     </div>
   );
