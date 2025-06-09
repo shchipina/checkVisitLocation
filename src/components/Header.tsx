@@ -33,6 +33,18 @@ function Header() {
             Home
           </NavLink>
           <NavLink
+            to="/map"
+            className={({ isActive }) =>
+              `relative inline-block px-1 
+              after:content-[''] after:absolute after:left-0 after:bottom-0 
+              after:h-[2px] after:w-0 after:bg-current 
+              after:transition-all after:duration-300 hover:after:w-full 
+              ${isActive ? "font-semibold" : ""}`
+            }
+          >
+            Map
+          </NavLink>
+          <NavLink
             to="/favorites"
             className={({ isActive }) =>
               `relative inline-block px-1 

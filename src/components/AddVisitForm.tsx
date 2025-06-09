@@ -6,10 +6,10 @@ import { useState } from "react";
 import type { Location } from "../types/location";
 import type { VisitData } from "../types/visitData";
 
-const AddVisitForm = () => {
+const AddVisitForm = ({ location }: { location: Location | null }) => {
   const queryClient = useQueryClient();
 
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(location);
   const [query, setQuery] = useState("");
   const today = new Date();
   const formattedDate = today.toISOString().split('T')[0];
