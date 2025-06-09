@@ -9,6 +9,7 @@ import NotFoundPage from "./pages/NotFoundPage"
 import Header from "./components/Header"
 import { useAppSelector } from "./hooks/reduxHook"
 import { selectToken } from "./features/auth/authSlice"
+import MapPage from "./pages/MapPage"
 
 function App() {
   const token = useAppSelector(selectToken);
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/map" element={<MapPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
