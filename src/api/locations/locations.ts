@@ -32,20 +32,3 @@ export const fetchLocation = async (): Promise<Location[]> => {
   const response = await instance.get<Location[]>('/locations/by-types?types=');
   return response.data;
 };
-
-
-// export const getLocationsCoords = async (): Promise<{lat: number, lng: number}[]> => {
-//   const response = await instance.get<Location[]>('/locations/by-types?types=', {
-
-//     headers: {
-//       "Accept-Language": "en"
-//     }
-//   });
-//   return response.data
-//     .filter(location => location.geoTag)
-//     .map(location => {
-//       const [lat, lng] = location.geoTag.split(',').map(Number);
-
-//       return {lat, lng};
-//     });
-// }
