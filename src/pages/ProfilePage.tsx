@@ -76,7 +76,7 @@ function ProfilePage() {
               className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
             >
               <option value="">— Оберіть формат —</option>
-              {["CSV", "JSON", "TEXT"].map((type) => (
+              {["CSV", "JSON", "TXT"].map((type) => (
                 <option key={type} value={type}>
                   {type}
                 </option>
