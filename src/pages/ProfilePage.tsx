@@ -9,13 +9,16 @@ import VisitModal from "../components/VisitModal";
 import { FaRegUser } from "react-icons/fa";
 import { CiBoxList, CiExport, CiLogout } from "react-icons/ci";
 import { IoMdAdd } from "react-icons/io";
+import AnalyticsModal from "../components/AnalyticsModal";
 
 function ProfilePage() {
   const [format, setFormat] = useState<string | null>(null);
   const [isOpenModal, setIsOpenVisit] = useState(false);
+  const [isOpenModalAnalytics, setIsOpenModalAnalytics] = useState(false);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
 
   const handleLogout = () => {
     dispatch(logout());
@@ -94,9 +97,17 @@ function ProfilePage() {
 
       <section className="bg-white shadow-md rounded-2xl px-6 py-5">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-[#333]/70">
-            <CiBoxList className="inline" /> Ваші візити
-          </h2>
+          <div className="flex flex-col gap-3">
+            <h2 className="text-xl font-semibold text-[#333]/70">
+              <CiBoxList className="inline" /> Ваші візити
+            </h2>
+            <button
+              onClick={() => setIsOpenModalAnalytics(true)}
+              className="font-medium text-gray-500 underline cursor-pointer hover:text-green-700"
+            >
+              Переглянути аналітуку відвідувань
+            </button>
+          </div>
           <button
             onClick={() => setIsOpenVisit(true)}
             className="group bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition cursor-pointer"
@@ -108,6 +119,7 @@ function ProfilePage() {
       </section>
 
       {isOpenModal && <VisitModal onClose={() => setIsOpenVisit(false)} />}
+      {isOpenModalAnalytics && <AnalyticsModal onClose={() => setIsOpenModalAnalytics(false)} />}
     </main>
   );
 }
